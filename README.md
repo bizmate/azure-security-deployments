@@ -8,13 +8,13 @@ Resources:
 ### Deploy ELK 
 
 ```bash
-sudo bash <(curl -s https://raw.githubusercontent.com//bizmate/azure-security-deployments/provision-elk.sh)
+curl -sL https://raw.githubusercontent.com/bizmate/azure-security-deployments/main/siem-and-monitoring-alerts/provision-elk.sh | bash
 ```
 Check that the ELK IP is now in your shell `env | GREP ELK`
 
 ### Deploy Apache with Filebeat pointing to ELK
 ```bash
-sudo bash <(curl -s https://raw.githubusercontent.com//bizmate/azure-security-deployments/provision-apache.sh)
+curl -sL https://raw.githubusercontent.com/bizmate/azure-security-deployments/main/siem-and-monitoring-alerts/provision-apache.sh | bash
 ```
 
 ## SSH Public key 
@@ -24,4 +24,4 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCf8BFXl+5+SCel79uL4hBgxIY8JtgmjvpP4XR7sSOM
 ```
 
 #### Generic links/notes
-- run remote command https://gist.github.com/n0ts/146c65b95a80b0a90934
+- run remote command https://askubuntu.com/questions/1086617/dev-fd-63-no-such-file-or-directory
