@@ -9,7 +9,7 @@ sudo service apache2 start
 curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.4.0-amd64.deb
 sudo dpkg -i filebeat-7.4.0-amd64.deb
 cd /etc/filebeat
-sudo mv filebeat.yml filebeat.yml_backup
+sudo mv filebeat.yml filebeat.yml_backup 2>/dev/null
 #edit filebeat.yml and change the value for output.elasticsearch and setup.kibana to reflect the IP of your Elk server
 sudo curl -L -o filebeat.yml https://raw.githubusercontent.com/bizmate/azure-security-deployments/main/siem-and-monitoring-alerts/filebeat-template.yml
 echo "Adding ELK IP's to filebeat config"
