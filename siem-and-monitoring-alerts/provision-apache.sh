@@ -19,4 +19,4 @@ sudo filebeat modules enable apache
 sudo filebeat setup
 sudo service filebeat start
 # check if filebeat can connect by testing the output
-filebeat test output
+sudo filebeat test output
