@@ -186,7 +186,10 @@ processors:
 # At debug level, you can selectively enable logging only for some components.
 # To enable all selectors use ["*"]. Examples of other selectors are "beat",
 # "publish", "service".
-#logging.selectors: ["*"]
+logging.selectors: ["*"]
+logging.to_files: false
+logging.to_stderr: true
+
 
 #============================== X-Pack Monitoring ===============================
 # filebeat can export internal metrics to a central Elasticsearch monitoring
@@ -214,7 +217,3 @@ processors:
 
 # This allows to enable 6.7 migration aliases
 #migration.6_to_7.enabled: true
-
-output.console:
-  # Boolean flag to enable or disable the output module.
-  enabled: true
