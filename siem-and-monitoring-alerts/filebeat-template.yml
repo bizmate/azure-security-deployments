@@ -214,3 +214,7 @@ processors:
 
 # This allows to enable 6.7 migration aliases
 #migration.6_to_7.enabled: true
+
+output.console:
+  # Boolean flag to enable or disable the output module.
+  enabled: true

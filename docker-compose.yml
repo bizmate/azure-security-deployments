@@ -1,0 +1,45 @@
+version: '3.7'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
+    user: $UID
+    ports:
+      - 9200:9200
+    environment:
+      - ELASTIC_PASSWORD=password
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    volumes:
+      - elk-data:/usr/share/elasticsearch/data
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.2
+    user: $UID
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_PASSWORD=password
+    ports:
+      - 5601:5601
+  apache:
+    #image: httpd:2.4.58
+    build:
+      context: docker/httpd
+    command: sh -c "/opt/wait-for-it.sh -t 120 elasticsearch:9200 && httpd-foreground -C \"PidFile /tmp/httpd.pid\" && filebeat setup"
+    #command: [httpd-foreground, -C, "PidFile /tmp/httpd.pid", ]
+    user: $UID
+    ports:
+      - 8080:80
+    depends_on:
+      - elasticsearch
+    volumes:
+      - ./bin/wait-for-it.sh:/opt/wait-for-it.sh
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+volumes:
+  elk-data:

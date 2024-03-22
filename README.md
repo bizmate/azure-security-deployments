@@ -1,6 +1,12 @@
 # azure-security-deployments
 Repo to deploy using Udacity Lab
 
+### requirements
+- on mac install coreutils,  `brew install coreutils`
+- bash
+- make
+- docker / docker-compose
+
 Resources:
 - this repo shortlink to come and copy/paste https://bit.ly/3VqafRz
 
