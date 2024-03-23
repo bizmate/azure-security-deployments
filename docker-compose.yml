@@ -25,10 +25,9 @@ services:
     #image: httpd:2.4.58
     build:
       context: docker/httpd
-    #command: sh -c "/opt/wait-for-it.sh -t 120 elasticsearch:9200 && httpd-foreground -C \"PidFile /tmp/httpd.pid\""
-    command: sh -c "/opt/wait-for-it.sh -t 120 elasticsearch:9200 && httpd-foreground -C \"PidFile /tmp/httpd.pid\" & /opt/wait-for-it.sh -t 120 elasticsearch:9200 && sleep 5 && /opt/wait-for-it.sh -t 120 elasticsearch:9200 && filebeat setup"
+    command: sh -c "/opt/wait-for-it.sh -t 120 elasticsearch:9200 && httpd-foreground -C \"PidFile /tmp/httpd.pid\""
+    #command: sh -c "/opt/wait-for-it.sh -t 120 elasticsearch:9200 && httpd-foreground -C \"PidFile /tmp/httpd.pid\" & /opt/wait-for-it.sh -t 120 elasticsearch:9200 && sleep 5 && /opt/wait-for-it.sh -t 120 elasticsearch:9200 && filebeat setup"
     #command: [httpd-foreground, -C, "PidFile /tmp/httpd.pid", ]
-    user: $UID
     ports:
       - 8080:80
     depends_on:
@@ -41,6 +40,36 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
+    labels:
+      - "co.elastic.logs/module=apache2"
+      - "co.elastic.logs/module=syslog"
+      - "co.elastic.logs/fileset.stdout=access"
+      - "co.elastic.logs/fileset.stderr=error"
+      - "co.elastic.metrics/module=apache"
+      - "co.elastic.metrics/module=syslog"
+      - "co.elastic.metrics/metricsets=status"
+      #- "co.elastic.metrics/hosts='${data.host}:${data.port}"
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.12.2
+    command: ["--strict.perms=false"]
+    user: root
+    depends_on:
+      - apache
+    volumes:
+      - ./bin/wait-for-it.sh:/opt/wait-for-it.sh
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./docker/filebeat/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:rw
+      - filebeat-registry:/usr/share/filebeat/data
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
 
 volumes:
   elk-data:
+  filebeat-registry:
