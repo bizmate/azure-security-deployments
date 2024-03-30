@@ -39,6 +39,23 @@ export UID
 make up
 ```
 
+## Terraforming
+import resource group or other resources
+
+```shell
+az login
+az account set --subscription c4f47e86-cf48-4611-8c4d-6f6124a34a60
+# show the resource group information
+az group show -n entp-256356
+# import resource group
+terraform import "azurerm_resource_group.XYZ_rg"  "/subscriptions/c4f47e86-cf48-4611-8c4d-6f6124a34a60/resourceGroups/entp-256356"
+```
+terraform 
+
+#### Terraform notes
+- https://medium.com/@jaseenathan/creating-azure-resources-with-terraform-a-step-by-step-guide-af53584db357
+- https://learn.microsoft.com/en-us/azure/azure-portal/get-subscription-tenant-id
+- importing group https://build5nines.com/terraform-import-existing-azure-resource-group/
 
 #### Generic links/notes
 - run remote command https://askubuntu.com/questions/1086617/dev-fd-63-no-such-file-or-directory
