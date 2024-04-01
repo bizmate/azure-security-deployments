@@ -82,8 +82,40 @@ resource "azurerm_network_security_rule" "XYZ_DMZ_NSRAllowSSH" {
   destination_port_range      = "22"
 //  source_address_prefix       = azurerm_virtual_network.XYZ_DMZ_vnet.subnet.address_prefix
 //  destination_address_prefix  = azurerm_virtual_network.XYZ_DMZ_vnet.subnet.address_prefix
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
+  source_address_prefix       = "VirtualNetwork"
+  destination_address_prefix  = "VirtualNetwork"
+  resource_group_name         = azurerm_resource_group.XYZ_rg.name
+  network_security_group_name = azurerm_network_security_group.XYZ_DMZ_Public_nsg.name
+}
+
+resource "azurerm_network_security_rule" "XYZ_DMZ_NSRAllowElk" {
+  name                        = "AllowElk"
+  priority                    = 300
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "9200"
+  //  source_address_prefix       = azurerm_virtual_network.XYZ_DMZ_vnet.subnet.address_prefix
+  //  destination_address_prefix  = azurerm_virtual_network.XYZ_DMZ_vnet.subnet.address_prefix
+  source_address_prefix       = "VirtualNetwork"
+  destination_address_prefix  = azurerm_linux_virtual_machine.XYZ_DMZ_Public_vm.private_ip_address
+  resource_group_name         = azurerm_resource_group.XYZ_rg.name
+  network_security_group_name = azurerm_network_security_group.XYZ_DMZ_Public_nsg.name
+}
+
+resource "azurerm_network_security_rule" "XYZ_DMZ_NSRAllowKibana" {
+  name                        = "AllowKibana"
+  priority                    = 400
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "5601"
+  //  source_address_prefix       = azurerm_virtual_network.XYZ_DMZ_vnet.subnet.address_prefix
+  //  destination_address_prefix  = azurerm_virtual_network.XYZ_DMZ_vnet.subnet.address_prefix
+  source_address_prefix       = "VirtualNetwork"
+  destination_address_prefix  = azurerm_linux_virtual_machine.XYZ_DMZ_Public_vm.private_ip_address
   resource_group_name         = azurerm_resource_group.XYZ_rg.name
   network_security_group_name = azurerm_network_security_group.XYZ_DMZ_Public_nsg.name
 }
