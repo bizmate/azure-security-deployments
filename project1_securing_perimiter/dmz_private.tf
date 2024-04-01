@@ -1,10 +1,5 @@
 # DMZ Private
-resource "azurerm_subnet" "XYZ_DMZ_Private_subnet" {
-  name                 = "XYZ_DMZ_Private_subnet"
-  resource_group_name  = azurerm_resource_group.XYZ_rg.name
-  virtual_network_name = azurerm_virtual_network.XYZ_DMZ_vnet.name
-  address_prefixes     = ["10.0.2.0/24"]
-}
+
 resource "azurerm_linux_virtual_machine" "XYZ_DMZ_Private_vm" {
   name                = "DmzPrivateVm"
   computer_name = "DmzPrivateVm"
@@ -40,7 +35,14 @@ resource "azurerm_network_interface" "XYZ_DMZ_Private_vm_netint" {
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = azurerm_subnet.XYZ_DMZ_Private_subnet.id
+    #subnet_id                     = index(azurerm_virtual_network.XYZ_DMZ_vnet.subnet.*.name, "XYZ_DMZ_Private_subnet")
+    subnet_id                     = azurerm_virtual_network.XYZ_DMZ_vnet.subnet.*.id[1]
     private_ip_address_allocation = "Dynamic"
   }
+}
+
+resource "azurerm_network_security_group" "XYZ_DMZ_Private_nsg" {
+  name                = "XYZ_DMZ_Private_nsg"
+  location            = azurerm_resource_group.XYZ_rg.location
+  resource_group_name = azurerm_resource_group.XYZ_rg.name
 }

@@ -56,6 +56,7 @@ terraform
 - https://medium.com/@jaseenathan/creating-azure-resources-with-terraform-a-step-by-step-guide-af53584db357
 - https://learn.microsoft.com/en-us/azure/azure-portal/get-subscription-tenant-id
 - importing group https://build5nines.com/terraform-import-existing-azure-resource-group/
+- remove resource from state https://stackoverflow.com/questions/61297480/how-can-i-remove-a-resource-from-terraform-state
 
 #### Generic links/notes
 - run remote command https://askubuntu.com/questions/1086617/dev-fd-63-no-such-file-or-directory
