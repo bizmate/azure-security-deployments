@@ -50,16 +50,24 @@ az group show -n entp-256356
 # import resource group
 terraform import "azurerm_resource_group.XYZ_rg"  "/subscriptions/c4f47e86-cf48-4611-8c4d-6f6124a34a60/resourceGroups/entp-256356"
 ```
-terraform 
+
+### Destroy them all
+
+```shell
+terraform destroy -target azurerm_linux_virtual_machine.XYZ_DMZ_Private_vm -target azurerm_linux_virtual_machine.XYZ_DMZ_Public_vm -target azurerm_linux_virtual_machine.XYZ_Internal_Enterprise_vm -target azurerm_linux_virtual_machine.XYZ_Internal_Management_vm -target azurerm_linux_virtual_machine.XYZ_Internal_Secure_vm -target azurerm_network_interface.XYZ_DMZ_Private_vm_netint -target azurerm_network_interface.XYZ_DMZ_Public_vm_netint -target azurerm_network_interface.XYZ_Internal_Enterprise_vm_netint -target azurerm_network_interface.XYZ_Internal_Management_vm_netint -target azurerm_network_interface.XYZ_Internal_Secure_vm_netint -target azurerm_network_security_group.XYZ_DMZ_Private_nsg -target azurerm_network_security_group.XYZ_DMZ_Public_nsg -target azurerm_network_security_group.XYZ_Internal_Enterprise_nsg -target azurerm_network_security_group.XYZ_Internal_Management_nsg -target azurerm_network_security_group.XYZ_Internal_Secure_nsg -target azurerm_network_security_rule.XYZ_DMZ_NSRAllowElk -target azurerm_network_security_rule.XYZ_DMZ_NSRAllowHttp -target azurerm_network_security_rule.XYZ_DMZ_NSRAllowKibana -target azurerm_network_security_rule.XYZ_DMZ_NSRAllowSSH -target azurerm_public_ip.XYZ_DMZ_Public_vm_public_ip -target azurerm_public_ip.XYZ_VPN_public_ip -target azurerm_virtual_network.XYZ_DMZ_vnet -target azurerm_virtual_network.XYZ_Internal_vnet 
+```
 
 #### Terraform notes
 - https://medium.com/@jaseenathan/creating-azure-resources-with-terraform-a-step-by-step-guide-af53584db357
 - https://learn.microsoft.com/en-us/azure/azure-portal/get-subscription-tenant-id
 - importing group https://build5nines.com/terraform-import-existing-azure-resource-group/
 - remove resource from state https://stackoverflow.com/questions/61297480/how-can-i-remove-a-resource-from-terraform-state
+- opened bug on the provider https://github.com/hashicorp/terraform-provider-azurerm/issues/25483
 
 #### Generic links/notes
 - run remote command https://askubuntu.com/questions/1086617/dev-fd-63-no-such-file-or-directory
 - https://www.elastic.co/guide/en/beats/filebeat/current/running-on-docker.html
 - https://www.elastic.co/guide/en/beats/filebeat/current/configuration-autodiscover-hints.html
 - https://github.com/shazChaudhry/docker-elastic/blob/master/filebeat-docker-compose.yml
+- `docker run -it --rm -v ./:/opt intel/qat-crypto-base`
+- https://learn.microsoft.com/en-us/azure/vpn-gateway/point-to-site-certificates-linux-openssl

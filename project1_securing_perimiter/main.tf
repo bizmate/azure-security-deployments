@@ -19,10 +19,10 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "XYZ_rg" {
-  name     = "entp-project-256554"
-  location = "West US"
+  name     = "entp-project-256656"
+  location = "East US"
   tags =  {
-    "DeploymentId": "256554",
+    "DeploymentId": "256656",
     "LaunchId": "1305",
     "LaunchType": "ON_DEMAND_LAB",
     "TemplateId": "1064",
@@ -77,7 +77,20 @@ resource "azurerm_virtual_network" "XYZ_Internal_vnet" {
     address_prefix = "10.1.3.0/24"
     security_group = azurerm_network_security_group.XYZ_Internal_Secure_nsg.id
   }
+
+//  subnet {
+//    name           = "GatewaySubnet"
+//    address_prefix = "10.1.0.0/24"
+//  }
 }
+
+// THE BELOW CAUSES CONFLICT. Subnets cannot be stand alone or both inline
+//resource "azurerm_subnet" "XYZ_Internal_GatewaySubnet_subnet" {
+//  name                 = "GatewaySubnet"
+//  virtual_network_name = azurerm_virtual_network.XYZ_Internal_vnet.name
+//  resource_group_name  = azurerm_resource_group.XYZ_rg.name
+//  address_prefixes       = ["10.1.0.0/24"]
+//}
 //
 //resource "azurerm_virtual_network_gateway" "XYZ_VPN_Gateway" {
 //  name                = "XYZ_VPN_Gateway"
@@ -91,8 +104,9 @@ resource "azurerm_virtual_network" "XYZ_Internal_vnet" {
 //  ip_configuration {
 //    public_ip_address_id          = azurerm_public_ip.XYZ_VPN_public_ip.id
 //    private_ip_address_allocation = "Dynamic"
-//    #subnet_id                     = azurerm_virtual_network.XYZ_DMZ_vnet.subnet[index(azurerm_virtual_network.XYZ_DMZ_vnet.subnet.*.name, "XYZ_DMZ_Public_subnet")].id
-//    subnet_id                     = data.azurerm_virtual_network.XYZ_DMZ_vnet.subnet.*.id[0]
+//    #subnet_id                     = azurerm_virtual_network.XYZ_Internal_vnet.subnet[index(azurerm_virtual_network.XYZ_Internal_vnet.subnet.*.name, "GatewaySubnet")].id
+//    #subnet_id                     = azurerm_subnet.XYZ_Internal_GatewaySubnet_subnet.id
+//    subnet_id =                   azurerm_virtual_network.XYZ_Internal_vnet.subnet.*.id[3]
 //  }
 //}
 //
@@ -106,8 +120,6 @@ resource "azurerm_virtual_network" "XYZ_Internal_vnet" {
 //    environment = "Production"
 //  }
 //}
-
-
 
 //
 //data "azurerm_virtual_network" "XYZ_DMZ_vnet" { # Read single AWS subnet

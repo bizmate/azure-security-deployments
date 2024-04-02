@@ -45,3 +45,33 @@ resource "azurerm_network_security_group" "XYZ_Internal_Secure_nsg" {
   location            = azurerm_resource_group.XYZ_rg.location
   resource_group_name = azurerm_resource_group.XYZ_rg.name
 }
+
+
+resource "azurerm_network_security_rule" "XYZ_Internal_Secure_AllowSSH" {
+  name                        = "AllowSSH"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "22"
+  source_address_prefix       = "VirtualNetwork"
+  destination_address_prefix  = "VirtualNetwork"
+  resource_group_name         = azurerm_resource_group.XYZ_rg.name
+  network_security_group_name = azurerm_network_security_group.XYZ_Internal_Secure_nsg.name
+}
+
+
+resource "azurerm_network_security_rule" "XYZ_Internal_Secure_AllowSSHfromVPN" {
+  name                        = "AllowSSHfromVPN"
+  priority                    = 200
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "22"
+  source_address_prefix       = "172.16.1.0/24"
+  destination_address_prefix  = "VirtualNetwork"
+  resource_group_name         = azurerm_resource_group.XYZ_rg.name
+  network_security_group_name = azurerm_network_security_group.XYZ_Internal_Secure_nsg.name
+}
