@@ -63,6 +63,8 @@ terraform destroy -target azurerm_linux_virtual_machine.XYZ_DMZ_Private_vm -targ
 - importing group https://build5nines.com/terraform-import-existing-azure-resource-group/
 - remove resource from state https://stackoverflow.com/questions/61297480/how-can-i-remove-a-resource-from-terraform-state
 - opened bug on the provider https://github.com/hashicorp/terraform-provider-azurerm/issues/25483
+- examples of gateway https://github.com/BBE75/Terraform/blob/098b6fad2cdff40aedc87010d43cdc251d9bb90b/Part_3/global-rg1-gateway-vpn.tf
+- 
 
 #### Generic links/notes
 - run remote command https://askubuntu.com/questions/1086617/dev-fd-63-no-such-file-or-directory

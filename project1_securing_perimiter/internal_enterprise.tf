@@ -35,8 +35,8 @@ resource "azurerm_network_interface" "XYZ_Internal_Enterprise_vm_netint" {
 
   ip_configuration {
     name                          = "internal"
-    #subnet_id                     = azurerm_subnet.XYZ_Internal_Enterprise_subnet.id
-    subnet_id                     = azurerm_virtual_network.XYZ_Internal_vnet.subnet.*.id[0]
+    subnet_id                     = data.azurerm_subnet.enterprise_subnet.id
+    #subnet_id                     = azurerm_virtual_network.XYZ_Internal_vnet.subnet.*.id[0]
     private_ip_address_allocation = "Dynamic"
   }
 }

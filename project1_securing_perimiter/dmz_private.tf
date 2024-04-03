@@ -5,7 +5,7 @@ resource "azurerm_linux_virtual_machine" "XYZ_DMZ_Private_vm" {
   computer_name = "DmzPrivateVm"
   resource_group_name = azurerm_resource_group.XYZ_rg.name
   location            = azurerm_resource_group.XYZ_rg.location
-  size                = "Standard_B1s"
+  size                = "Standard_DS1_v2"
   admin_username      = "adminuser"
   network_interface_ids = [
     azurerm_network_interface.XYZ_DMZ_Private_vm_netint.id,
@@ -61,26 +61,9 @@ resource "azurerm_network_security_rule" "XYZ_DMZ_NSR_private_AllowSSH" {
   network_security_group_name = azurerm_network_security_group.XYZ_DMZ_Private_nsg.name
 }
 
-resource "azurerm_network_security_rule" "XYZ_DMZ_NSRAllowElkPrivate" {
-  name                        = "AllowElkOutboundTraffic"
-  priority                    = 200
-  direction                   = "Outbound"
-  access                      = "Allow"
-  protocol                    = "Tcp"
-  source_port_range           = "*"
-  destination_port_range      = "9200"
-  //  source_address_prefix       = azurerm_virtual_network.XYZ_DMZ_vnet.subnet.address_prefix
-  //  destination_address_prefix  = azurerm_virtual_network.XYZ_DMZ_vnet.subnet.address_prefix
-  source_address_prefix       = "VirtualNetwork"
-  //destination_address_prefix  = azurerm_public_ip.XYZ_DMZ_Public_vm_public_ip.ip_address
-  destination_address_prefix  = "*"
-  resource_group_name         = azurerm_resource_group.XYZ_rg.name
-  network_security_group_name = azurerm_network_security_group.XYZ_DMZ_Private_nsg.name
-}
-
 resource "azurerm_network_security_rule" "XYZ_DMZ_NSR_private_AllowSSHfromVPN" {
   name                        = "AllowSSHfromVPN"
-  priority                    = 300
+  priority                    = 200
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
@@ -88,6 +71,54 @@ resource "azurerm_network_security_rule" "XYZ_DMZ_NSR_private_AllowSSHfromVPN" {
   destination_port_range      = "22"
   source_address_prefix       = "172.16.1.0/24"
   destination_address_prefix  = "VirtualNetwork"
+  resource_group_name         = azurerm_resource_group.XYZ_rg.name
+  network_security_group_name = azurerm_network_security_group.XYZ_DMZ_Private_nsg.name
+}
+
+resource "azurerm_network_security_rule" "XYZ_DMZ_NSRAllowElk" {
+  name                        = "AllowElk"
+  priority                    = 300
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "9200"
+  //  source_address_prefix       = azurerm_virtual_network.XYZ_DMZ_vnet.subnet.address_prefix
+  //  destination_address_prefix  = azurerm_virtual_network.XYZ_DMZ_vnet.subnet.address_prefix
+  source_address_prefix       = "VirtualNetwork"
+  destination_address_prefix  = azurerm_linux_virtual_machine.XYZ_DMZ_Private_vm.private_ip_address
+  resource_group_name         = azurerm_resource_group.XYZ_rg.name
+  network_security_group_name = azurerm_network_security_group.XYZ_DMZ_Private_nsg.name
+}
+
+resource "azurerm_network_security_rule" "XYZ_DMZ_NSRAllowKibana" {
+  name                        = "AllowKibana"
+  priority                    = 400
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "5601"
+  //  source_address_prefix       = azurerm_virtual_network.XYZ_DMZ_vnet.subnet.address_prefix
+  //  destination_address_prefix  = azurerm_virtual_network.XYZ_DMZ_vnet.subnet.address_prefix
+  source_address_prefix       = "VirtualNetwork"
+  destination_address_prefix  = azurerm_linux_virtual_machine.XYZ_DMZ_Private_vm.private_ip_address
+  resource_group_name         = azurerm_resource_group.XYZ_rg.name
+  network_security_group_name = azurerm_network_security_group.XYZ_DMZ_Private_nsg.name
+}
+
+resource "azurerm_network_security_rule" "AllowKibanaFromVPN" {
+  name                        = "AllowKibanaFromVPN"
+  priority                    = 500
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "5601"
+  //  source_address_prefix       = azurerm_virtual_network.XYZ_DMZ_vnet.subnet.address_prefix
+  //  destination_address_prefix  = azurerm_virtual_network.XYZ_DMZ_vnet.subnet.address_prefix
+  source_address_prefix       = "172.16.1.0/24"
+  destination_address_prefix  = azurerm_linux_virtual_machine.XYZ_DMZ_Private_vm.private_ip_address
   resource_group_name         = azurerm_resource_group.XYZ_rg.name
   network_security_group_name = azurerm_network_security_group.XYZ_DMZ_Private_nsg.name
 }
