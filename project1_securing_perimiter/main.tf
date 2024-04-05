@@ -16,13 +16,14 @@ terraform {
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
+  skip_provider_registration = true
 }
 
 resource "azurerm_resource_group" "XYZ_rg" {
-  name     = "entp-project-256780"
-  location = "West Europe"
+  name     = "entp-project-256997"
+  location = "East US"
   tags =  {
-    "DeploymentId": "256780",
+    "DeploymentId": "256997",
     "LaunchId": "1305",
     "LaunchType": "ON_DEMAND_LAB",
     "TemplateId": "1064",
@@ -99,7 +100,7 @@ resource "azurerm_virtual_network_gateway" "XYZ_VPN_Gateway" {
 
   type     = "Vpn"
   vpn_type = "RouteBased"
-  sku      = "VpnGw1"
+  sku      = "VpnGw2AZ"
 
   ip_configuration {
     public_ip_address_id          = azurerm_public_ip.XYZ_VPN_public_ip.id
@@ -120,6 +121,7 @@ resource "azurerm_public_ip" "XYZ_VPN_public_ip" {
   location            = azurerm_resource_group.XYZ_rg.location
   #allocation_method   = "Dynamic"
   allocation_method   = "Static"
+  sku                 = "Standard"
 
   tags = {
     environment = "Production"
