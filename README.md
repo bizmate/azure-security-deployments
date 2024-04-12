@@ -1,11 +1,15 @@
-# azure-security-deployments
-Repo to deploy using Udacity Lab
+# Azure Security Deployments
+Repo to deploy using terraform/bash
+
+## DISCLAIMER
+This repo is published under the following [LICENSE](./LICENSE)
 
 ### requirements
 - on mac install coreutils,  `brew install coreutils`
 - bash (the default shell on mac should also work too)
 - make
 - docker / docker-compose
+- terraform
 
 Notice this might not work on Windows as I do not work or provision on Windows machines.
 
@@ -40,7 +44,8 @@ make up
 ```
 
 ## Terraforming
-import resource group or other resources
+import resource group or other resources, notice the commands below might have ids and references that are there only as
+examples. You might need to use the Azure CLI to find the correct subscription or resource group id
 
 ```shell
 az login
