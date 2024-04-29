@@ -37,6 +37,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCf8BFXl+5+SCel79uL4hBgxIY8JtgmjvpP4XR7sSOM
 
 ## Dockerisation
 
+Run it in each specific project, for instance for siem do `cd siem-and-monitoring-alerts` and then run the below
 you can run the local docker instance by running 
 ```shell
 export UID
@@ -44,6 +45,7 @@ make up
 ```
 
 ## Terraforming
+Terraform is used in the project 1 folder, cd in the folder to run terraform commands
 import resource group or other resources, notice the commands below might have ids and references that are there only as
 examples. You might need to use the Azure CLI to find the correct subscription or resource group id
 

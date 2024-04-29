@@ -1,0 +1,32 @@
+version: '3'
+services:
+  nessus:
+    image: tenable/nessus:10.7.2-ubuntu
+#    build:
+#      context: docker/nginx
+    restart: on-failure:2
+    ports:
+      - "8834:8834"
+    environment:
+      - USERNAME=nessusAd
+      - PASSWORD=nessusPa
+      - ACTIVATION_CODE
+#    depends_on:
+#      - php
+#      - node
+#    volumes:
+#      - ./docker/nginx/nginx.conf.dev:/etc/nginx/nginx.conf:ro
+#      - websrc:/var/www/html/:z
+
+  metasploitable:
+    image: tleemcjr/metasploitable2
+#    user: $UID
+    command: ["/bin/bash", "-c", "/bin/services.sh && sleep infinity"]
+#    working_dir: /var/www/html
+#    depends_on:
+#      - composer
+#    environment:
+#      - YELP_ACCESS_TOKEN
+##      - DATABASE_URL=mysql://dbuser:dbpass1@db:3306/devdb?serverVersion=5.7
+#    links:
+#      - db
